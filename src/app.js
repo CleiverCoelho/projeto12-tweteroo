@@ -32,7 +32,7 @@ app.post("/tweets", (req, res) => {
   // const user = req.headers.user;
   const tweet = req.body;
   const user = tweet.username;
-  if(!USUARIOS.find((elemento) => elemento === user)){
+  if(USUARIOS.find((elemento) => elemento === user)){
     return res.send("UNAUTHORIZED");
   }
   TWEETS.push(tweet);
@@ -41,8 +41,8 @@ app.post("/tweets", (req, res) => {
 
 app.get("/tweets", (req, res) => {
   
-  const counter = 0;
-  const index = TWEETS.length - 1;
+  let counter = 0;
+  let index = TWEETS.length - 1;
   let dezUltimos = []
   if(TWEETS.length <= 10){
     dezUltimos = [...TWEETS];
@@ -54,7 +54,7 @@ app.get("/tweets", (req, res) => {
     }  
   }
   
-  const tweetsAvatares = dezPrimeiros.map((elemento, index) => {
+  const tweetsAvatares = dezUltimos.map((elemento, index) => {
     const user = USUARIOS.find((findUsername) => findUsername.username === elemento.username)
     const novoObj = {
       username: user.username,
@@ -63,6 +63,7 @@ app.get("/tweets", (req, res) => {
     }
     return novoObj;
   })
+  // console.log(tweetsAvatares)
   res.send(tweetsAvatares);
 })
 
