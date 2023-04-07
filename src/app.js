@@ -20,7 +20,7 @@ app.get("/usuarios", (req, res) => {
 
 app.post("/sign-up",(req, res) => {
   const usuario = req.body;
-  // console.log(typeof(usuario.avatar));
+  console.log(typeof(usuario.avatar));
   // if(!usuario.avatar || !usuario.username || typeof(usuario.avatar !== "string") || typeof(usuario.username) !== "string"){
   //   return res.status(400).send("Todos os campos são obrigatórios!");
   // }
@@ -31,19 +31,29 @@ app.post("/sign-up",(req, res) => {
 app.post("/tweets", (req, res) => {
   // const user = req.headers.user;
   const tweet = req.body;
+  const user = tweet.username;
+  if(!USUARIOS.find((elemento) => elemento === user)){
+    return res.send("UNAUTHORIZED");
+  }
   TWEETS.push(tweet);
   res.send("OK");
 })
 
 app.get("/tweets", (req, res) => {
   
-  const dezPrimeiros = TWEETS.filter((elemento, index) => {
-    if(index < 9){
-      // console.log(index)
-      return true
-    }
-  })
-
+  const counter = 0;
+  const index = TWEETS.length - 1;
+  let dezUltimos = []
+  if(TWEETS.length <= 10){
+    dezUltimos = [...TWEETS];
+  }else{
+    while(counter < 10){
+      dezUltimos.push(TWEETS[index])
+      counter++
+      index--
+    }  
+  }
+  
   const tweetsAvatares = dezPrimeiros.map((elemento, index) => {
     const user = USUARIOS.find((findUsername) => findUsername.username === elemento.username)
     const novoObj = {
