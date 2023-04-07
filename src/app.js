@@ -32,7 +32,7 @@ app.post("/tweets", (req, res) => {
   // const user = req.headers.user;
   const tweet = req.body;
   const user = tweet.username;
-  if(USUARIOS.find((elemento) => elemento === user)){
+  if(!USUARIOS.find((elemento) => elemento.username === user)){
     return res.send("UNAUTHORIZED");
   }
   TWEETS.push(tweet);
